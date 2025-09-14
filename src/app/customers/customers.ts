@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+
 import {NgIf, NgFor} from '@angular/common';
 @Component({
   selector: 'app-customers',
@@ -15,11 +15,11 @@ import {NgIf, NgFor} from '@angular/common';
 //@Injectable({ providedIn: 'root' })
 export class Customers implements OnInit {
   //private apiUrl = 'http://localhost:8080/api/users';
-  customers : any;
+  customers : any[] = [];
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.http.get("http://localhost:8085/customers").subscribe(data=>{
+    this.http.get<any[]>("http://localhost:8085/customers").subscribe(data=>{
       this.customers=data;
     },error => {console.log(error);})
   }
