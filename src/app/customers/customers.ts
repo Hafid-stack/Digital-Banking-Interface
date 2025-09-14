@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {NgIf} from '@angular/common';
+import {NgIf, NgFor} from '@angular/common';
 @Component({
   selector: 'app-customers',
   imports: [
-    NgIf
+    NgIf,NgFor
   ],
   templateUrl: './customers.html',
   styleUrl: './customers.css',
