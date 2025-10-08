@@ -18,10 +18,15 @@ export class Customers implements OnInit {
   customers : any[] = [];
   constructor(private http: HttpClient) {}
 
-  ngOnInit() {
-    this.http.get<any[]>("http://localhost:8085/customers").subscribe(data=>{
-      this.customers=data;
-    },error => {console.log(error);})
-  }
 
+ngOnInit() {
+    this.http.get("http://localhost:8085/customers").subscribe({
+      next: (data: any) => { // Changed Object to any for Angular's typical response type
+        this.customers = data;
+      },
+      error: (err) => {
+        console.error('Error fetching customers:', err); // Use console.error for errors
+      }
+    });
+}
 }
