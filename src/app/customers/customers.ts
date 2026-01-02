@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import {RouterLink} from '@angular/router';
+import { Observable, catchError, of } from 'rxjs';
 
 import {NgIf, NgFor, CommonModule} from '@angular/common';
 import {CustomerService} from '../services/customer';
@@ -17,20 +16,21 @@ import {CustomerService} from '../services/customer';
 //@Injectable({ providedIn: 'root' })
 export class Customers implements OnInit {
   //private apiUrl = 'http://localhost:8080/api/users';
-  customers : any[] = [];
+  customers$! : Observable<any>;
+  errorMessage!: string;
   constructor(private customerService: CustomerService) {}
 
   ngOnInit() {
     // This runs automatically when page loads
-    this.customerService.getCustomers().subscribe({
-      next: (data) => {
-        this.customers = data; // Save the data
-        //console.log(data);     // Check console to see if it worked
-      },
-      error: (err) => {
-        console.error("Error getting customers.", err);
-      }
-    });
+//do not subscribe here
+    // this.customerService.getCustomers().subscribe({
+    //   next: (data) => {
+    this.customers$ = this.customerService.getCustomers().pipe(
+      catchError(err => {
+        this.errorMessage = err.message;
+        return of([]);
+      })
+    );
   }
 }
 // this is the old version
