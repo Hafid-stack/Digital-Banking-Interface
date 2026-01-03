@@ -1,47 +1,58 @@
-import {Component, OnInit} from '@angular/core';
-import { Observable, catchError, of } from 'rxjs';
-
-import {NgIf, NgFor, CommonModule} from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Observable, catchError, of, tap } from 'rxjs';
+import {CustomerModel} from '../models/customer';
 import {CustomerService} from '../services/customer';
+
+
+
 @Component({
   selector: 'app-customers',
-  imports: [
-    NgIf,NgFor,CommonModule
-  ],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './customers.html',
-  styleUrl: './customers.css',
-  standalone: true
+  styleUrls: ['./customers.css']
 })
-
-//@Injectable({ providedIn: 'root' })
 export class Customers implements OnInit {
-  //private apiUrl = 'http://localhost:8080/api/users';
-  customers$! : Observable<any>;
-  errorMessage!: string;
+
+
+  // customers$!: Observable<CustomerModel[]>;
+  customers$!: Observable<any>;
+
+
+  errorMessage: string = '';
+
   constructor(private customerService: CustomerService) {}
 
+  // ngOnInit(): void {
+  //   this.customers$ = this.customerService.getCustomers().pipe(
+  //     tap(data => console.log('📦 CUSTOMERS FROM API:', data)),
+  //     catchError(err => {
+  //       this.errorMessage = 'Failed to load customers';
+  //       console.error(err);
+  //       return of([]);
+  //     })
+  //   );
+  // ngOnInit(): void {
+  //   this.customerService.getCustomers().subscribe(data => {
+  //     console.log('✅ FINAL DATA USED BY TABLE:', data);
+  //   });
+  // }
   ngOnInit() {
-    // This runs automatically when page loads
-//do not subscribe here
-    // this.customerService.getCustomers().subscribe({
-    //   next: (data) => {
+    // We get the stream from the service
     this.customers$ = this.customerService.getCustomers().pipe(
+
+      // Spy: Print the data to console so we can see it
+      tap(data => console.log('✅ Data arrived:', data)),
+
+      // Error Handler: If backend is dead, return empty list
       catchError(err => {
+        console.error('❌ Error:', err);
         this.errorMessage = err.message;
         return of([]);
       })
     );
   }
+
+
 }
-// this is the old version
-// ngOnInit() {
-//     this.http.get("http://localhost:8085/customers").subscribe({
-//       next: (data: any) => { // Changed Object to any for Angular's typical response type
-//         this.customers = data;
-//       },
-//       error: (err) => {
-//         console.error('Error fetching customers:', err); // Use console.error for errors
-//       }
-//     });
-// }
-// }

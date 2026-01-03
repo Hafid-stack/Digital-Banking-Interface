@@ -1,15 +1,27 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+import {CustomerModel} from '../models/customer';
+
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class CustomerService {
-  private apiUrl = 'http://localhost:8085/customers';
-  constructor(private http: HttpClient) { }
 
+  private apiUrl = 'http://localhost:8085/customers';
+
+  constructor(private http: HttpClient) {}
+
+  // getCustomers(): Observable<CustomerModel[]> {
+  //   return this.http.get<any>(this.apiUrl).pipe(
+  //     map(res => res._embedded.customers)
+  //   );
+  // }
   public getCustomers(): Observable<any> {
-    return this.http.get(this.apiUrl);
+    // Just get the data and pass it through. No mapping needed!
+    return this.http.get<any>(this.apiUrl);
   }
+
 }
