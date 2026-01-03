@@ -1,1 +1,55 @@
-<p>accounts works!</p>
+<div class="container mt-4">
+  <h2>Accounts Manager</h2>
+
+  @if (errorMessage) {
+    <div class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+  }
+
+  @if (accounts$ | async; as listAccounts) {
+
+    <table class="table table-striped table-hover">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Type</th>
+        <th>Customer</th>
+        <th>Balance</th>
+        <th>Specifics</th> <th>Status</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (acc of listAccounts; track acc.id) {
+          <tr>
+            <td>{{ acc.id }}</td>
+            <td>{{ acc.type }}</td>
+
+            <td>{{ acc.customerDTO.name }}</td>
+
+            <td>{{ acc.balance | currency : 'USD' }}</td>
+
+            <td>
+              @if (acc.type === 'CurrentAccount') {
+                <span class="badge bg-warning text-dark">
+                  Overdraft: {{ $any(acc).overDraft | currency : 'USD' }}
+                </span>
+              } @else if (acc.type === 'SavingAccount') {
+                <span class="badge bg-success">
+                  Interest: {{ $any(acc).interestRate }}%
+                </span>
+              }
+            </td>
+
+            <td>{{ acc.status }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+  } @else {
+    <div class="text-center">
+      <p>Loading accounts...</p>
+    </div>
+  }
+</div>
