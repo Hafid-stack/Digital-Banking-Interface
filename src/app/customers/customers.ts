@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Observable, catchError, of, tap } from 'rxjs';
-import {CustomerModel} from '../models/customer';
+
 import {CustomerService} from '../services/customer';
+import {CustomerModel} from '../models/customer';
 
 
 
@@ -16,8 +17,8 @@ import {CustomerService} from '../services/customer';
 export class Customers implements OnInit {
 
 
-  // customers$!: Observable<CustomerModel[]>;
-  customers$!: Observable<any>;
+  customers$!: Observable<CustomerModel[]>;
+  // customers$!: Observable<any>;
 
 
   errorMessage: string = '';
