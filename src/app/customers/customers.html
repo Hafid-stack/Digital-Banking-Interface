@@ -1,34 +1,101 @@
 <div class="container mt-4">
-  <h1>Customers</h1>
 
-  <div *ngIf="errorMessage" class="alert alert-danger">
-    {{ errorMessage }}
+  <div class="card mb-4">
+    <div class="card-header bg-primary text-white">Add New Customer</div>
+    <div class="card-body">
+      <form [formGroup]="newCustomerForm" (ngSubmit)="handleSaveCustomer()">
+        <div class="mb-3">
+          <label class="form-label">Name:</label>
+          <input type="text" formControlName="name" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Email:</label>
+          <input type="text" formControlName="email" class="form-control">
+        </div>
+
+        <button [disabled]="!newCustomerForm.valid" class="btn btn-success">
+          Save Customer
+        </button>
+      </form>
+    </div>
   </div>
 
-  <div *ngIf="customers$ | async as list">
+  <div class="card">
+    <div class="card-header">Customer List</div>
+    <div class="card-body">
 
-    <table class="table table-bordered" *ngIf="list.length > 0; else noData">
-      <thead class="table-dark">
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let c of list">
-        <td>{{ c.id }}</td>
-        <td>{{ c.name }}</td>
-        <td>{{ c.email }}</td>
-      </tr>
-      </tbody>
-    </table>
+      @if (errorMessage) {
+        <div class="alert alert-danger">{{ errorMessage }}</div>
+      }
 
-    <ng-template #noData>
-      <div class="alert alert-warning">
-        No customers found in the database.
-      </div>
-    </ng-template>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+          @if (customers$ | async; as list) {
 
+            @for (c of list; track c.id) {
+              <tr>
+                <td>{{ c.id }}</td>
+                <td>{{ c.name }}</td>
+                <td>{{ c.email }}</td>
+                <td>
+                  <button (click)="handleDeleteCustomer(c)" class="btn btn-danger btn-sm">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            } @empty {
+              <tr><td colspan="4">No customers found.</td></tr>
+            }
+
+          } @else {
+            <tr><td colspan="4">Loading...</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
+
+
+<!--<div class="container mt-4">-->
+<!--  <h1>Customers</h1>-->
+
+<!--  <div *ngIf="errorMessage" class="alert alert-danger">-->
+<!--    {{ errorMessage }}-->
+<!--  </div>-->
+
+<!--  <div *ngIf="customers$ | async as list">-->
+
+<!--    <table class="table table-bordered" *ngIf="list.length > 0; else noData">-->
+<!--      <thead class="table-dark">-->
+<!--      <tr>-->
+<!--        <th>ID</th>-->
+<!--        <th>Name</th>-->
+<!--        <th>Email</th>-->
+<!--      </tr>-->
+<!--      </thead>-->
+<!--      <tbody>-->
+<!--      <tr *ngFor="let c of list">-->
+<!--        <td>{{ c.id }}</td>-->
+<!--        <td>{{ c.name }}</td>-->
+<!--        <td>{{ c.email }}</td>-->
+<!--      </tr>-->
+<!--      </tbody>-->
+<!--    </table>-->
+
+<!--    <ng-template #noData>-->
+<!--      <div class="alert alert-warning">-->
+<!--        No customers found in the database.-->
+<!--      </div>-->
+<!--    </ng-template>-->
+
+<!--  </div>-->
+<!--</div>-->

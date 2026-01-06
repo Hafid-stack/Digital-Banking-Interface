@@ -15,7 +15,7 @@ import { Accounts } from './accounts/accounts';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'customers', pathMatch: 'full' },
-  { path: 'customers', component: Customers },
+  { path: 'customers', component: Customers},
   { path: 'accounts', component: Accounts },
 ];
 //
