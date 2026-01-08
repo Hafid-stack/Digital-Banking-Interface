@@ -26,3 +26,20 @@ export interface CurrentAccount extends AccountDetails {
 export interface SavingAccount extends AccountDetails {
   interestRate: number;
 }
+export interface AccountOperation {
+  id: number;
+  operationDate: string;
+  amount: number;
+  type: string; // "DEBIT" or "CREDIT"
+  description: string;
+}
+
+// 6. The History Object (Matches AccountHistoryDTO)
+export interface AccountHistory {
+  accountId: string;
+  balance: number;
+  currentPage: number;
+  totalPages: number;
+  pageSize: number;
+  accountOperationsDTO: AccountOperation[]; // Note the name matches Java exactly
+}

@@ -39,7 +39,7 @@ export class Customers implements OnInit {
     this.loadCustomers();
   }
 
-  // I moved this to a separate function so we can call it again after Deleting/Adding
+  //Get ALL Customers
   loadCustomers() {
     this.customers$ = this.customerService.getCustomers().pipe(
       tap(data => console.log('✅ Data arrived:', data)),
