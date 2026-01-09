@@ -59,6 +59,39 @@ export class Accounts implements OnInit {
   }
 
   // 5. Handle the Save Button
+  // handleSaveAccount() {
+  //   if (this.accountForm.invalid) return;
+  //
+  //   let formValue = this.accountForm.value;
+  //
+  //   if (formValue.type === 'CurrentAccount') {
+  //     this.accountService.saveCurrentAccount(
+  //       formValue.balance,
+  //       formValue.overDraft,
+  //       formValue.customerId
+  //     ).subscribe({
+  //       next: (data) => {
+  //         alert("Current Account Saved!");
+  //         this.refreshAccounts(); // Reload the table
+  //         this.accountForm.reset({ type: 'CurrentAccount', balance: 0 }); // Reset form
+  //       },
+  //       error: (err) => alert("Error saving account: " + err.message)
+  //     });
+  //   } else {
+  //     this.accountService.saveSavingAccount(
+  //       formValue.balance,
+  //       formValue.interestRate,
+  //       formValue.customerId
+  //     ).subscribe({
+  //       next: (data) => {
+  //         alert("Saving Account Saved!");
+  //         this.refreshAccounts();
+  //         this.accountForm.reset({ type: 'SavingAccount', balance: 0 });
+  //       },
+  //       error: (err) => alert("Error saving account: " + err.message)
+  //     });
+  //   }
+  // }
   handleSaveAccount() {
     if (this.accountForm.invalid) return;
 
@@ -66,29 +99,35 @@ export class Accounts implements OnInit {
 
     if (formValue.type === 'CurrentAccount') {
       this.accountService.saveCurrentAccount(
-        formValue.balance,
-        formValue.overDraft,
-        formValue.customerId
+        formValue.balance,      // 1. Balance (First)
+        formValue.overDraft,    // 2. Overdraft (Second)
+        formValue.customerId    // 3. ID (Last)
       ).subscribe({
         next: (data) => {
           alert("Current Account Saved!");
-          this.refreshAccounts(); // Reload the table
-          this.accountForm.reset({ type: 'CurrentAccount', balance: 0 }); // Reset form
+          this.refreshAccounts();
+          this.accountForm.reset({ type: 'CurrentAccount', balance: 0 });
         },
-        error: (err) => alert("Error saving account: " + err.message)
+        error: (err) => {
+          console.log(err); // Log the full error for debugging
+          alert("Error saving account: " + err.message);
+        }
       });
     } else {
       this.accountService.saveSavingAccount(
-        formValue.balance,
-        formValue.interestRate,
-        formValue.customerId
+        formValue.balance,      // 1. Balance (First)
+        formValue.interestRate, // 2. Interest (Second)
+        formValue.customerId    // 3. ID (Last)
       ).subscribe({
         next: (data) => {
           alert("Saving Account Saved!");
           this.refreshAccounts();
           this.accountForm.reset({ type: 'SavingAccount', balance: 0 });
         },
-        error: (err) => alert("Error saving account: " + err.message)
+        error: (err) => {
+          console.log(err);
+          alert("Error saving account: " + err.message);
+        }
       });
     }
   }
